@@ -1,0 +1,239 @@
+.about-page {
+  background-color: white;
+  color: #111;
+}
+
+.about-hero {
+  min-height: 520px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 80px 60px;
+
+  background-color: #111;
+  color: white;
+}
+
+.about-eyebrow {
+  margin-bottom: 24px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+
+.about-hero h1 {
+  margin-bottom: 30px;
+
+  font-size: clamp(56px, 8vw, 110px);
+  line-height: 0.9;
+  letter-spacing: -5px;
+}
+
+.about-intro {
+  max-width: 600px;
+
+  color: #cfcfcf;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.about-story {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 60px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.about-story-title > p {
+  margin-bottom: 14px;
+
+  color: #777;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.about-story-title h2 {
+  font-size: 46px;
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.about-story-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  color: #555;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.about-values {
+  padding: 80px 60px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  background-color: #f5f5f5;
+}
+
+.about-card {
+  min-height: 280px;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: white;
+  border: 1px solid #e5e5e5;
+}
+
+.about-card span {
+  margin-bottom: 60px;
+
+  color: #999;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.about-card h3 {
+  margin-bottom: 16px;
+
+  font-size: 24px;
+}
+
+.about-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.about-cta {
+  margin: 0 60px 80px;
+  padding: 100px 60px;
+
+  background-color: #f1f1ed;
+  color: #111;
+}
+
+.about-cta-content {
+  max-width: 900px;
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+.about-cta-label {
+  margin-bottom: 20px;
+
+  color: #777;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.about-cta h2 {
+  margin-bottom: 24px;
+
+  font-size: clamp(46px, 6vw, 78px);
+  line-height: 0.95;
+  letter-spacing: -3px;
+}
+
+.about-cta-text {
+  max-width: 520px;
+  margin: 0 auto 35px;
+
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about-shop-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+
+  padding: 17px 24px;
+
+  background-color: #111;
+  color: white;
+
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.about-shop-link span {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.about-shop-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.85;
+}
+
+.about-shop-link:hover span {
+  transform: translateX(5px);
+}
+
+@media (max-width: 850px) {
+  .about-hero {
+    min-height: 430px;
+    padding: 60px 20px;
+  }
+
+  .about-hero h1 {
+    letter-spacing: -3px;
+  }
+
+  .about-story {
+    padding: 70px 20px;
+
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-story-title h2 {
+    font-size: 36px;
+  }
+
+  .about-values {
+    padding: 60px 20px;
+
+    grid-template-columns: 1fr;
+  }
+
+  .about-card {
+    min-height: auto;
+  }
+
+  .about-card span {
+    margin-bottom: 35px;
+  }
+
+  .about-cta {
+    margin: 0 20px 50px;
+    padding: 70px 25px;
+  }
+
+  .about-cta h2 {
+    letter-spacing: -2px;
+  }
+}

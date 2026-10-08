@@ -61,7 +61,7 @@ While building URBAN, I practiced and improved my understanding of:
 Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/dhmgiannakas-dev/urban-sneaker-store.git
 ```
 
 Install dependencies:

@@ -53,7 +53,8 @@ While building URBAN, I practiced and improved my understanding of:
 - Controlled form inputs and checkboxes
 - Persisting application state with localStorage
 - Responsive layouts with CSS Grid, Flexbox, and media queries
-- Environment variables with Vite
+- Environment variables and API key security
+- Serverless Functions with Vercel
 - Basic accessibility practices
 
 ## Running Locally
@@ -64,31 +65,52 @@ Clone the repository:
 git clone https://github.com/dhmgiannakas-dev/urban-sneaker-store.git
 ```
 
+Navigate to the project directory:
+
+```bash
+cd urban-sneaker-store
+```
+
 Install dependencies:
 
 ```bash
 npm install
 ```
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root and add your KicksDB API key:
 
 ```env
-VITE_KICKS_API_KEY=your_api_key
+KICKS_API_KEY=your_api_key
+```
+
+Log in to Vercel and link the project:
+
+```bash
+npx vercel login
+npx vercel link
 ```
 
 Start the development server:
 
 ```bash
-npm run dev
+npx vercel dev
 ```
+
+Open the local URL displayed in the terminal (usually `http://localhost:3000`).
+
+**Note:** This project uses Vercel Serverless Functions to fetch product data. Running `npm run dev` starts only the Vite frontend and does not execute the API functions. Use `npx vercel dev` for full local functionality.
 
 ## API
 
 Product data is provided by the KicksDB API.
 
-The API key is stored in an environment variable and the `.env` file is excluded from version control.
+API requests are handled through a Vercel Serverless Function (`/api/products`) instead of directly from the frontend.
 
-> Note: Because this is a frontend-only Vite application, variables prefixed with `VITE_` are included in the client bundle. A production application should proxy requests through a backend or serverless function when an API credential must remain private.
+The API key is stored securely in the `KICKS_API_KEY` environment variable and is never exposed to the client.
+
+The `.env` file is excluded from version control.
+
+For production deployment, the API key must be configured in the Vercel project's Environment Variables.
 
 ## Screenshots
 

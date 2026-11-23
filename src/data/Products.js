@@ -24,3 +24,70 @@ export const comingSoonProducts = [
     image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=800&q=80",
   },
 ];
+
+
+export function getColors(colorway = "") {
+  const color = colorway.toLowerCase();
+
+  const colors = [];
+
+  if (
+    color.includes("red") ||
+    color.includes("toro bravo") ||
+    color.includes("chicago")
+  ) {
+    colors.push("Red");
+  }
+
+  if (
+    color.includes("black") ||
+    color.includes("bred")
+  ) {
+    colors.push("Black");
+  }
+
+  if (
+    color.includes("white") ||
+    color.includes("sail")
+  ) {
+    colors.push("White");
+  }
+
+  if (
+    color.includes("blue") ||
+    color.includes("unc")
+  ) {
+    colors.push("Blue");
+  }
+
+  if (color.includes("green")) colors.push("Green");
+
+  if (
+    color.includes("grey") ||
+    color.includes("gray") ||
+    color.includes("silver")
+  ) {
+    colors.push("Grey");
+  }
+
+  if (
+    color.includes("brown") ||
+    color.includes("mocha")
+  ) {
+    colors.push("Brown");
+  }
+
+  if (color.includes("pink")) colors.push("Pink");
+  if (color.includes("purple")) colors.push("Purple");
+  if (color.includes("orange")) colors.push("Orange");
+  if (color.includes("yellow")) colors.push("Yellow");
+
+  if (
+    color.includes("beige") ||
+    color.includes("cream")
+  ) {
+    colors.push("Beige");
+  }
+
+  return colors.length > 0 ? colors : ["Other"];
+}

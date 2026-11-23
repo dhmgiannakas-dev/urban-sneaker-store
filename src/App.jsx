@@ -210,13 +210,8 @@ useEffect(() => {
 
       setProducts(normalizedProducts);
 
-      console.log(
-        "Final shop products:",
-        normalizedProducts.length
-      );
     } catch (error) {
       if (error.name !== "AbortError") {
-        console.error("Products error:", error);
         setProductsError(true);
       }
     } finally {

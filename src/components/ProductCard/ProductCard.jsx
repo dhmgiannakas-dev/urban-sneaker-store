@@ -1,31 +1,10 @@
 import { Link } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
-
-import { addToCart } from "../../store/slices/cartSlice";
+import useAddToCart  from "../../hooks/useAddToCart";
 
 import "./ProductCard.css";
 
 function ProductCard({ product }) {
-  const dispatch = useDispatch();
-
-  const [added, setAdded] = useState(false);
-  const timeoutRef = useRef(null);
-
-  function handleAddToCart() {
-    dispatch(addToCart(product));
-    setAdded(true);
-
-    clearTimeout(timeoutRef.current);
-
-    timeoutRef.current = setTimeout(() => {
-      setAdded(false);
-    }, 1000);
-  }
-
-  useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
+const { added, handleAddToCart } = useAddToCart(product);
 
   return (
     <div className="product-card">

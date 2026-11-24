@@ -4,9 +4,14 @@ import "./Checkout.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "../../store/slices/cartSlice";
+import {
+  selectCartItems,
+  selectCartTotalPrice,
+} from "../../store/selectors/cartSelectors";
 
 function Checkout() {
   const cart = useSelector((state) => state.cart.items);
+  const totalPrice = useSelector(selectCartTotalPrice);
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
@@ -29,10 +34,6 @@ function Checkout() {
     navigate("/success");
   }
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
 
   if (cart.length === 0 && !orderSubmitted) {
     return <Navigate to="/cart" replace />;

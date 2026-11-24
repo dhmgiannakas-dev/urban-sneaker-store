@@ -3,6 +3,10 @@ import "./Cart.css";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  selectCartItems,
+  selectCartTotalPrice,
+} from "../../store/selectors/cartSelectors";
 
 import {
   removeFromCart,
@@ -13,12 +17,9 @@ import {
 
 function Cart() {
   const cart = useSelector((state) => state.cart.items);
+  const totalPrice = useSelector(selectCartTotalPrice);
   const dispatch = useDispatch();
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
 
   function handleClearCart() {
     const confirmed = window.confirm(

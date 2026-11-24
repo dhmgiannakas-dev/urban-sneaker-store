@@ -1,18 +1,34 @@
+
 import "./Cart.css";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
 
-function Cart({
-  cart,
-  increaseQuantity,
-  decreaseQuantity,
+import {
   removeFromCart,
   clearCart,
-}) {
+  increaseQuantity,
+  decreaseQuantity,
+} from "../../store/slices/cartSlice";
+
+function Cart() {
+  const cart = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+
+  function handleClearCart() {
+    const confirmed = window.confirm(
+      "Are you sure you want to remove all products from your cart?"
+    );
+
+    if (confirmed) {
+      dispatch(clearCart());
+    }
+  }
 
   if (cart.length === 0) {
     return (
@@ -24,16 +40,6 @@ function Cart({
         </div>
       </main>
     );
-  }
-
-  function handleClearCart() {
-    const confirmed = window.confirm(
-      "Are you sure you want to remove all products from your cart?"
-    );
-
-    if (confirmed) {
-      clearCart();
-    }
   }
 
   return (
@@ -48,6 +54,7 @@ function Cart({
           Clear Cart
         </button>
       </div>
+
       <div className="cart-layout">
         <section className="cart-items">
           {cart.map((item) => (
@@ -63,7 +70,9 @@ function Cart({
 
                   <button
                     className="remove-button"
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() =>
+                      dispatch(removeFromCart(item.id))
+                    }
                     aria-label={`Remove ${item.name} from cart`}
                   >
                     <X size={20} strokeWidth={1.8} />
@@ -73,7 +82,9 @@ function Cart({
                 <div className="cart-item-bottom">
                   <div className="quantity-controls">
                     <button
-                      onClick={() => decreaseQuantity(item.id)}
+                      onClick={() =>
+                        dispatch(decreaseQuantity(item.id))
+                      }
                     >
                       −
                     </button>
@@ -81,7 +92,9 @@ function Cart({
                     <span>{item.quantity}</span>
 
                     <button
-                      onClick={() => increaseQuantity(item.id)}
+                      onClick={() =>
+                        dispatch(increaseQuantity(item.id))
+                      }
                     >
                       +
                     </button>

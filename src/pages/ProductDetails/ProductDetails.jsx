@@ -1,17 +1,36 @@
 import { useParams, Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import { addToCart } from "../../store/slices/cartSlice";
+
 import "./ProductDetails.css";
 
-function ProductDetails({
-  products,
-  loading,
-  error,
-  addToCart,
-}) {
+function ProductDetails({ products, loading, error }) {
   const { productId: id } = useParams();
+  const dispatch = useDispatch();
+
+  const [added, setAdded] = useState(false);
+  const timeoutRef = useRef(null);
 
   const product = products.find(
     (product) => product.id === id
   );
+
+  function handleAddToCart() {
+    dispatch(addToCart(product));
+    setAdded(true);
+
+    clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setAdded(false);
+    }, 1000);
+  }
+
+  useEffect(() => {
+    return () => clearTimeout(timeoutRef.current);
+  }, []);
 
   if (loading) {
     return (
@@ -100,9 +119,9 @@ function ProductDetails({
 
         <button
           className="product-details-button"
-          onClick={() => addToCart(product)}
+          onClick={handleAddToCart}
         >
-          Add to Cart
+          {added ? "Added ✓" : "Add to Cart"}
         </button>
       </div>
     </main>

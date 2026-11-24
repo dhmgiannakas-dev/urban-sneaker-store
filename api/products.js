@@ -1,27 +1,18 @@
-
-const API_URL = "https://api.kicks.dev/v3/stockx/products";
+const API_URL = "https://solescout.ai/api/public/search";
 
 const SEARCHES = [
-  "Nike",
-  "Adidas",
-  "New Balance",
-  "ASICS",
-  "Puma",
-  "Converse",
+  "Nike Air Max",
+  "Jordan",
+  "Adidas Samba",
+  "New Balance 9060",
+  "ASICS Gel",
+  "Puma Suede",
 ];
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
       error: "Method not allowed",
-    });
-  }
-
-  const apiKey = process.env.KICKS_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({
-      error: "Server API key is not configured",
     });
   }
 
@@ -33,33 +24,30 @@ export default async function handler(req, res) {
     for (const search of SEARCHES) {
       const url = new URL(API_URL);
 
-      url.searchParams.set("query", search);
-      url.searchParams.set("limit", "100");
+      url.searchParams.set("q", search);
+      url.searchParams.set("limit", "20");
 
       try {
         const response = await fetch(url.toString(), {
-          headers: {
-            Authorization: apiKey,
-          },
           signal: AbortSignal.timeout(5000),
         });
 
         if (!response.ok) {
           console.error(
-            `KicksDB ${search}: HTTP ${response.status}`
+            `SoleScout ${search}: HTTP ${response.status}`
           );
           continue;
         }
 
         const data = await response.json();
 
-        if (Array.isArray(data.data)) {
-          allProducts.push(...data.data);
+        if (Array.isArray(data.results) && data.results.length > 0) {
+          allProducts.push(...data.results);
           successfulRequests++;
         }
       } catch (error) {
         console.error(
-          `KicksDB request failed for ${search}:`,
+          `SoleScout request failed for ${search}:`,
           error.message
         );
       }
@@ -74,28 +62,34 @@ export default async function handler(req, res) {
     const uniqueProducts = [
       ...new Map(
         allProducts
-          .filter((product) => product?.id)
-          .map((product) => [product.id, product])
+          .filter((product) => product?.slug)
+          .map((product) => [product.slug, product])
       ).values(),
     ];
 
     // Return only fields needed by the frontend
-    const products = uniqueProducts.map((product) => ({
-      id: product.id,
-      title: product.title,
-      brand: product.brand,
-      avg_price: product.avg_price,
-      min_price: product.min_price,
-      max_price: product.max_price,
-      image: product.image,
-      categories: product.categories,
-      category: product.category,
-      secondary_title: product.secondary_title,
-      model: product.model,
-      gender: product.gender,
-      description: product.description,
-      short_description: product.short_description,
-    }));
+const products = uniqueProducts
+  .filter(
+    (product) =>
+      product.category === "shoes" &&
+      product.title &&
+      product.image &&
+      Number.isFinite(product.lowest_price_usd) &&
+      product.lowest_price_usd > 0
+  )
+  .map((product) => ({
+    id: product.slug,
+    title: product.title,
+    brand: product.brand,
+    avg_price: product.lowest_price_usd,
+    min_price: product.lowest_price_usd,
+    max_price: product.retail_price_usd,
+    image: product.image,
+    category: product.category,
+    gender: product.gender,
+    style_code: product.style_code,
+    source_url: product.url,
+  }));
 
     // Cache the public response at Vercel's edge
     res.setHeader(

@@ -1,97 +1,104 @@
+
 import { useState } from "react";
 import "./Checkout.css";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "../../store/slices/cartSlice";
 
-function Checkout({ cart, clearCart }) {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [address, setAddress] = useState("");
-    const [orderSubmitted, setOrderSubmitted] = useState(false);
+function Checkout() {
+  const cart = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
-    const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
 
-    function handleSubmit(e) {
-        e.preventDefault();
+  const navigate = useNavigate();
 
-        if (!name || !email || !address) {
-            alert("Please fill all fields.");
-            return;
-        }
+  function handleSubmit(e) {
+    e.preventDefault();
 
-        setOrderSubmitted(true);
-        clearCart();
-        navigate("/success");
-
+    if (!name.trim() || !email.trim() || !address.trim()) {
+      alert("Please fill all fields.");
+      return;
     }
 
-    const totalPrice = cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-    );
+    setOrderSubmitted(true);
+    dispatch(clearCart());
+    navigate("/success");
+  }
 
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
-    if (cart.length === 0 && !orderSubmitted) {
-        return <Navigate to="/cart" replace />;
-    }
-    return (
-        <main className="checkout-page">
-            <h1>Checkout</h1>
-            <div className="checkout-layout">
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Full Name</label>
+  if (cart.length === 0 && !orderSubmitted) {
+    return <Navigate to="/cart" replace />;
+  }
 
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </div>
+  return (
+    <main className="checkout-page">
+      <h1>Checkout</h1>
 
-                    <div>
-                        <label>Email</label>
+      <div className="checkout-layout">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Full Name</label>
 
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-                    <div>
-                        <label>Address</label>
+          <div>
+            <label>Email</label>
 
-                        <input
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                        />
-                    </div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-                    <button type="submit">
-                        Place Order
-                    </button>
-                </form>
-                <section className="order-summary">
-                    <h2>Order Summary</h2>
+          <div>
+            <label>Address</label>
 
-                    {cart.map((item) => (
-                        <div className="order-summary-item" key={item.id}>
-                            <p>
-                                {item.name} x {item.quantity}
-                            </p>
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
 
-                            <p>
-                                €{(item.price * item.quantity).toFixed(2)}
-                            </p>
-                        </div>
-                    ))}
+          <button type="submit">
+            Place Order
+          </button>
+        </form>
 
-                    <h3>Total: €{totalPrice.toFixed(2)}</h3>
-                </section>
+        <section className="order-summary">
+          <h2>Order Summary</h2>
+
+          {cart.map((item) => (
+            <div className="order-summary-item" key={item.id}>
+              <p>
+                {item.name} x {item.quantity}
+              </p>
+
+              <p>
+                €{(item.price * item.quantity).toFixed(2)}
+              </p>
             </div>
-        </main>
-    );
+          ))}
+
+          <h3>Total: €{totalPrice.toFixed(2)}</h3>
+        </section>
+      </div>
+    </main>
+  );
 }
 
 export default Checkout;

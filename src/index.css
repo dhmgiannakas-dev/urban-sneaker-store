@@ -30,3 +30,7 @@ body,
   display: flex;
   flex-direction: column;
 }
+
+html {
+  scrollbar-gutter: stable;
+}

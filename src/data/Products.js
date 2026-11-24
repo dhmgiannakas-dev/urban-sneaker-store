@@ -27,67 +27,35 @@ export const comingSoonProducts = [
 
 
 export function getColors(colorway = "") {
-  const color = colorway.toLowerCase();
+  const color = String(colorway || "").toLowerCase();
 
-  const colors = [];
+  const colorMap = {
+    Red: ["red", "crimson", "burgundy", "maroon", "chicago", "bred", "toro bravo"],
+    Black: ["black", "onyx", "bred"],
+    White: ["white", "sail", "ivory"],
+    Blue: ["blue", "navy", "unc", "cobalt", "royal"],
+    Green: ["green", "olive", "mint", "forest", "khaki"],
+    Grey: ["grey", "gray", "silver", "graphite", "charcoal"],
+    Brown: ["brown", "mocha", "chocolate", "coffee"],
+    Pink: ["pink", "rose", "fuchsia"],
+    Purple: ["purple", "violet", "lavender", "lilac"],
+    Orange: ["orange", "coral", "peach"],
+    Yellow: ["yellow", "gold", "mustard"],
+    Beige: ["beige", "cream", "sand", "tan", "oatmeal"],
+  };
 
-  if (
-    color.includes("red") ||
-    color.includes("toro bravo") ||
-    color.includes("chicago")
-  ) {
-    colors.push("Red");
-  }
+  const words = color.split(/[^a-z]+/).filter(Boolean);
+  const normalized = words.join(" ");
 
-  if (
-    color.includes("black") ||
-    color.includes("bred")
-  ) {
-    colors.push("Black");
-  }
-
-  if (
-    color.includes("white") ||
-    color.includes("sail")
-  ) {
-    colors.push("White");
-  }
-
-  if (
-    color.includes("blue") ||
-    color.includes("unc")
-  ) {
-    colors.push("Blue");
-  }
-
-  if (color.includes("green")) colors.push("Green");
-
-  if (
-    color.includes("grey") ||
-    color.includes("gray") ||
-    color.includes("silver")
-  ) {
-    colors.push("Grey");
-  }
-
-  if (
-    color.includes("brown") ||
-    color.includes("mocha")
-  ) {
-    colors.push("Brown");
-  }
-
-  if (color.includes("pink")) colors.push("Pink");
-  if (color.includes("purple")) colors.push("Purple");
-  if (color.includes("orange")) colors.push("Orange");
-  if (color.includes("yellow")) colors.push("Yellow");
-
-  if (
-    color.includes("beige") ||
-    color.includes("cream")
-  ) {
-    colors.push("Beige");
-  }
+  const colors = Object.entries(colorMap)
+    .filter(([_, keywords]) =>
+      keywords.some((keyword) =>
+        normalized.includes(" ") && keyword.includes(" ")
+          ? ` ${normalized} `.includes(` ${keyword} `)
+          : words.includes(keyword)
+      )
+    )
+    .map(([colorName]) => colorName);
 
   return colors.length > 0 ? colors : ["Other"];
 }

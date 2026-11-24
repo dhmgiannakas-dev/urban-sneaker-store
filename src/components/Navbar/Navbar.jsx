@@ -1,10 +1,12 @@
 import "./Navbar.css";
 import { NavLink, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import logo from "../../assets/urban-logo1.png";
 import { ShoppingCart } from "lucide-react";
 
-function Navbar({ cart }) {
+function Navbar() {
+  const cart = useSelector((state) => state.cart.items);
 
   const [animateCart, setAnimateCart] = useState(false);
 
@@ -30,6 +32,7 @@ function Navbar({ cart }) {
       <Link to="/" className="navbar-brand">
         <img src={logo} alt="URBAN Home" />
       </Link>
+
       <div className="navbar-links">
         <NavLink to="/" end>
           Home
@@ -47,7 +50,9 @@ function Navbar({ cart }) {
       <Link to="/cart" className="cart-link">
         <ShoppingCart size={19} />
 
-        <span className={`cart-count ${animateCart ? "cart-pop" : ""}`}>
+        <span
+          className={`cart-count ${animateCart ? "cart-pop" : ""}`}
+        >
           {totalItems}
         </span>
       </Link>

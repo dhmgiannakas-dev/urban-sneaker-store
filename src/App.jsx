@@ -12,10 +12,8 @@ import Success from "./pages/Success/Success";
 import About from "./pages/About/About";
 import NotFound from "./pages/NotFound/NotFound";
 
-import { useProducts } from "./hooks/useProducts";
 
 function App() {
-  const { products, loading, error } = useProducts();
 
   return (
     <>
@@ -25,33 +23,21 @@ function App() {
         <Route
           path="/"
           element={
-            <Home
-              products={products}
-              loading={loading}
-              error={error}
-            />
+            <Home />
           }
         />
 
         <Route
           path="/shop"
           element={
-            <Shop
-              products={products}
-              loading={loading}
-              error={error}
-            />
+            <Shop />
           }
         />
 
         <Route
           path="/products/:productId"
           element={
-            <ProductDetails
-              products={products}
-              loading={loading}
-              error={error}
-            />
+            <ProductDetails />
           }
         />
 

@@ -162,3 +162,28 @@ export function getBalancedProducts(products) {
 
   return selected.slice(0, MAX_PRODUCTS);
 }
+
+export function processProducts(products) {
+    const apiProducts = Array.isArray(products)
+    ? products
+    : [];
+
+  const uniqueProducts = [
+    ...new Map(
+      apiProducts
+        .filter((product) => product?.id)
+        .map((product) => [product.id, product])
+    ).values(),
+  ];
+
+  const validProducts = uniqueProducts.filter(
+    (product) =>
+      isSneaker(product) &&
+      hasValidImage(product)
+  );
+
+  const balancedProducts =
+    getBalancedProducts(validProducts);
+
+  return balancedProducts.map(normalizeProduct);
+}

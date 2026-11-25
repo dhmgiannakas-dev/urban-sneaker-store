@@ -3,9 +3,19 @@ import ShopFilters from "../../components/ShopFilters/ShopFilters";
 
 import { useProductFilters } from "../../hooks/useProductFilters";
 
+import { useGetProductsQuery } from "../../store/api/productsApi";
+
 import "./Shop.css";
 
-function Shop({ products, loading, error }) {
+function Shop() {
+
+  const {
+    data: products = [],
+    isLoading: loading,
+    isError: error,
+    isFetching,
+  } = useGetProductsQuery();
+
   const filters = useProductFilters(products);
   const { filteredProducts } = filters;
 

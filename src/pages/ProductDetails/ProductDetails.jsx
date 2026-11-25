@@ -1,12 +1,18 @@
 import { useParams, Link } from "react-router-dom";
 import useAddToCart  from "../../hooks/useAddToCart";
+import { useGetProductsQuery } from "../../store/api/productsApi";
 
 
 import "./ProductDetails.css";
 
-function ProductDetails({ products, loading, error }) {
+function ProductDetails() {
   const { productId: id } = useParams();
-
+  
+  const {
+    data: products = [],
+    isLoading: loading,
+    isError: error,
+  } = useGetProductsQuery();
 
   const product = products.find(
     (product) => product.id === id

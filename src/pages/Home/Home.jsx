@@ -1,36 +1,33 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Hero from "../../components/Hero/Hero";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ComingSoonCard from "../../components/ComingSoonCard/ComingSoonCard";
 
+import { useGetProductsQuery } from "../../store/api/productsApi";
+
 import { comingSoonProducts } from "../../data/Products";
 
 import "./Home.css";
 
-function Home({ products, loading, error }) {
+function Home() {
+  const {
+    data: products = [],
+    isLoading: loading,
+    isError: error,
+  } = useGetProductsQuery();
+
+const queryResult = useGetProductsQuery();
+
+console.log("RTK Query:", queryResult);
+
   const featuredProducts = products.slice(0, 4);
-
-  const [minLoading, setMinLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMinLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (error) {
-    return <p>Failed to load products. Please try again.</p>;
-  }
 
   return (
     <>
       <Hero />
 
-      {loading || minLoading ? (
+      {loading ? (
         <div
           className="loading-container"
           role="status"
@@ -43,6 +40,8 @@ function Home({ products, loading, error }) {
 
           <h2>Loading sneakers...</h2>
         </div>
+      ) : error ? (
+        <p>Failed to load products. Please try again.</p>
       ) : (
         <section className="featured-products">
           <div className="featured-heading">
